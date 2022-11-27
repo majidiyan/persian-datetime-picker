@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="admin-1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <css src="Magentoyan_MyDatePicker::css/persian-datepicker-default.css"/>
+    </head>
+    
+    <body>
+        
+
+        <referenceContainer name="footer">
+            <block class="Magentoyan\MyDatePicker\Block\Main" name="main_index_index" before="-" template="Magentoyan_MyDatePicker::content.phtml"/>
+        </referenceContainer>
+    </body>
+</page>

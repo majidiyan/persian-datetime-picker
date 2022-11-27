@@ -1,0 +1,322 @@
+<script type="text/javascript">
+
+    require(['jquery', 'jquery/ui', 'persiandatepicker', 'Magento_Ui/js/lib/knockout/bindings/datepicker'], function ($) {
+
+        $(document).ready(function ($) {
+            //-----------------------------------------------------
+
+            /*config*/
+            window.yearIndex = 2;
+            window.monthIndex = 0;
+            window.dayIndex = 1;
+
+
+            $(document).click(function () {
+
+                $(document).find('._has-datepicker').each(function () {
+
+                if($(this).val() != ''){
+                    var pure_en_str = numsFaToEnConvert($(this).val());
+                    $(this).val(pToGconv(pure_en_str));
+                }
+
+
+                    var az = $(this).css('border-top-style');
+                    if (az == 'solid') {
+                        $(this).css('border', 'blue 2px dashed');
+
+                        var inputElemId = $(this).attr('id');
+                        var divParent = $(this).closest('div');
+                        divParent.css('position', 'relative');
+
+                        var auxAr = ($(this).val()).split(/[ ]/);
+
+                        var needTimePicker = false;
+
+                        if (typeof auxAr[1] != "undefined")
+                            needTimePicker = auxAr[1].match(/^([0-9]|0[0-9]|1[0-9]|2[0-3]):([0-9]|[0-5][0-9]):([0-9]|[0-5][0-9])$/);//timepicker
+
+                        var splitArr = (auxAr[0]).split('/');
+
+
+
+                        //config
+                        var formatDate = getDateFormat(inputElemId);//yy-mm-dd
+                        var formatDateArr = formatDate.split('-');
+                        
+                        $.each(formatDateArr, function( index, value ){
+                          
+                           switch(value){
+                               case 'yy':
+                                   window.yearIndex = index;
+                                   break;
+                                   
+                               case 'mm':
+                                   window.monthIndex = index;
+                                   break;
+                                   
+                               case 'dd':
+                                   window.dayIndex = index;
+                                   break;
+                           }
+                        });
+                        //config end
+                        
+                        var pdYear = parseInt(splitArr[window.yearIndex]);
+                        var pdMonth = parseInt(splitArr[window.monthIndex]) - 1;
+                        var pdDay = parseInt(splitArr[window.dayIndex]);
+
+                        var jdf = $(this).persianDatepicker('mymethod1');
+
+                        var myoutput = '';
+
+                        if (pdYear > 1900 && pdMonth >= 0 && pdDay >= 0)
+                            var myoutput = jdf.getPCalendarDate(jdf.getJulianDay(new Date(pdYear, pdMonth, pdDay)));
+
+
+                        var timePart = '';
+                        if (needTimePicker)
+                            timePart = auxAr[1];
+                        
+                        
+
+                        divParent.append('<div class="monitor-persian-date"  onclick="monitorClick(' + ('\'') + inputElemId + ('\'') + (', \'') + needTimePicker + ('\'') + ')">' + myoutput + ' ' + timePart + '</div>');
+
+
+                        //timepicker
+                        if (needTimePicker)
+                            $(".monitor-persian-date").addClass("short-width");
+                        else
+                            $(".monitor-persian-date").removeClass("short-width");
+                        //timepicker end
+
+                        needTimePicker = timePickerNeeded(inputElemId) > 0;
+                        
+                        
+                        
+                        
+
+                        if($(this).val() == '')
+                            $(this).persianDatepicker({timePicker: needTimePicker});
+                        else{
+                            var selected_date = myoutput.year + '/' + myoutput.month + '/' + myoutput.date;
+                            $(this).persianDatepicker({timePicker: needTimePicker , selectedDate: selected_date});
+                        }
+                    }
+                });
+            });
+
+
+            setTimeout(function () {
+                $(document).find('._has-datepicker').each(function () {
+
+                if($(this).val() != ''){
+                    var pure_en_str = numsFaToEnConvert($(this).val());
+                    $(this).val(pToGconv(pure_en_str));
+                }
+
+
+
+
+                    var az = $(this).css('border-top-style');
+                    if (az == 'solid') {
+                        $(this).css('border', 'blue 2px dashed');
+
+                        var inputElemId = $(this).attr('id');
+                        var divParent = $(this).closest('div');
+                        divParent.css('position', 'relative');
+
+                        var auxAr = ($(this).val()).split(/[ ]/);
+
+                        var needTimePicker = false;
+
+                        if (typeof auxAr[1] != "undefined")
+                            needTimePicker = auxAr[1].match(/^([0-9]|0[0-9]|1[0-9]|2[0-3]):([0-9]|[0-5][0-9]):([0-9]|[0-5][0-9])$/);//timepicker
+
+
+                        var splitArr = (auxAr[0]).split('/');
+
+
+
+                        //config
+                        var formatDate = getDateFormat(inputElemId);//yy-mm-dd
+                        var formatDateArr = formatDate.split('-');
+                        
+                        $.each(formatDateArr, function( index, value ){
+                          
+                           switch(value){
+                               case 'yy':
+                                   window.yearIndex = index;
+                                   break;
+                                   
+                               case 'mm':
+                                   window.monthIndex = index;
+                                   break;
+                                   
+                               case 'dd':
+                                   window.dayIndex = index;
+                                   break;
+                           }
+                        });
+                        //config end
+
+                        var pdYear = parseInt(splitArr[window.yearIndex]);
+                        var pdMonth = parseInt(splitArr[window.monthIndex]) - 1;
+                        var pdDay = parseInt(splitArr[window.dayIndex]);
+
+                        var jdf = $(this).persianDatepicker('mymethod1');
+
+                        var myoutput = '';
+
+
+
+                        if (pdYear > 1900 && pdMonth >= 0 && pdDay >= 0)
+                            var myoutput = jdf.getPCalendarDate(jdf.getJulianDay(new Date(pdYear, pdMonth, pdDay)));
+
+
+                        var timePart = '';
+                        if (needTimePicker)
+                            timePart = auxAr[1];
+
+                        
+                        divParent.append('<div class="monitor-persian-date" onclick="monitorClick(' + ('\'') + inputElemId + ('\'') + (', \'') + needTimePicker + ('\'') + ')" >' + myoutput + ' ' + timePart + '</div>');
+                        //timepicker
+                        if (needTimePicker)
+                            $(".monitor-persian-date").addClass("short-width");
+                        else
+                            $(".monitor-persian-date").removeClass("short-width");
+                        //timepicker end
+
+                        needTimePicker = timePickerNeeded(inputElemId) > 0;
+
+
+
+                         if($(this).val() == '')
+                            $(this).persianDatepicker({timePicker: needTimePicker});
+                        else{
+                            var selected_date = myoutput.year + '/' + myoutput.month + '/' + myoutput.date;
+                            $(this).persianDatepicker({timePicker: needTimePicker , selectedDate: selected_date});
+                        }
+                    }
+                });
+            }, 7000);
+
+
+            monitorClick = function (inputElemId, needTimePicker) {
+
+                if (!needTimePicker)
+                    jQuery('#' + inputElemId).trigger('click');
+                else {
+                    jQuery('#' + inputElemId).next(".ui-datepicker-trigger").trigger('click');
+                }
+
+            }
+
+            timePickerNeeded = function (inputElemId) {
+
+                try {
+                    var el = jQuery('#' + inputElemId);
+
+                    var qqq = el.datepicker("option", "showTime");
+                    var sss = el.datepicker("option", "timeFormat") == 'H:mm:ss';
+
+                    return (qqq && sss) ? 1 : 0;
+                } catch (e) {
+                    console.log(e.message);
+                    return 0;
+                }
+            }
+            
+            getDateFormat = function(inputElemId){
+                try {
+                    var el = jQuery('#' + inputElemId);
+
+                    
+                    var result = el.datepicker("option", "dateFormat") ;
+
+                    return result;
+                } catch (e) {
+                    console.log(e.message);
+                    return false;
+                }
+            }
+
+
+            numsFaToEnConvert = function (faNum) {
+
+                $.each(['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'], function (key, value) {
+
+
+                    faNum = faNum.split(new RegExp(value, 'i')).join(key);
+                });
+
+                return faNum;
+
+            }
+
+            pToGconv = function (jallaliDateTime) {
+                
+                
+
+                var jdf = $(this).persianDatepicker('mymethod1');
+                var pd = $(this).persianDatepicker('mymethod2');
+
+
+                var auxAr = jallaliDateTime.split(/[ ]/);
+                var splitArr = (auxAr[0]).split('/');
+
+                //config
+//                var yearIndex = 0;
+//                var monthIndex = 1;
+//                var dayIndex = 2;
+
+                var jsonStr = '{"' + window.yearIndex + '":"YYYY", "' + window.monthIndex + '":"MM", "' + window.dayIndex + '":"DD"}';
+                var auxArr = $.parseJSON(jsonStr);
+
+                var dateFormatStr = '';
+
+                $.each(auxArr, function (index, value) {
+
+                    dateFormatStr += value + '/';
+                });
+
+                dateFormatStr = dateFormatStr.slice(0, -1);
+
+
+                var pdYear = parseInt(splitArr[window.yearIndex]);
+                var pdMonth = parseInt(splitArr[window.monthIndex]);
+                var pdDay = parseInt(splitArr[window.dayIndex]);
+
+                if (pdYear > 1900)
+                    return jallaliDateTime;
+
+                var persianDatex = pdYear + '/' + pdMonth + '/' + pdDay;
+
+                var value = pd.parse(persianDatex);
+
+
+
+                var result = jdf.getGDate(value)._toString(dateFormatStr);
+
+                var needTimePicker = false;
+
+                if (typeof auxAr[1] != "undefined")
+                    needTimePicker = auxAr[1].match(/^([0-9]|0[0-9]|1[0-9]|2[0-3]):([0-9]|[0-5][0-9]):([0-9]|[0-5][0-9])$/);//timepicker
+
+                if (needTimePicker)
+                    return result + ' ' + auxAr[1];
+                else
+                    return result;
+
+            }
+
+
+
+
+            //-----------------------------------------------------                           
+        });
+    });
+
+
+</script>
+

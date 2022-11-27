@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+
+    <preference for="Magento\Review\Block\Customer\ListCustomer" type="Magentoyan\FarsiAdmin\Block\Customer\ListCustomer" />
+    
+    
+    <preference for="Magento\Backend\Block\Widget\Grid\Column\Renderer\Datetime" type="Magentoyan\FarsiAdmin\Block\Widget\Grid\Column\Renderer\Datetime" />
+               
+    <type name="Magento\Framework\View\Element\AbstractBlock">
+      <plugin name="magentoyan_farsiadmin_abstractblock" type="Magentoyan\FarsiAdmin\Plugin\Element\AbstractBlock" sortOrder="1" disabled="false" />
+    </type>
+    
+</config>
